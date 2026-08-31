@@ -6,9 +6,22 @@
 <body>
     <% if (locals.user) {%>
         <h1>WELCOME BACK <%= user.username %></h1>
+        <% if (user.membership_status) { %>
+            <h2>You are an official Club Member!</h2>
+        <% } else { %>
+            <a href="/join-club">Join Our club</a>
+        <% } %>
         <a href="/log-out">LOG OUT</a>
     <% } else { %>
         <h1>please log in</h1>
+            <% if (messages && messages.length > 0) { %>
+                <ul class="errors">
+                    <% messages.forEach(msg => { %>
+                    <li><%= msg %></li>
+                    <% }) %>
+                </ul>
+            <% } %>
+        <a href="/sign-up">Sign Up</a>
         <form action="/log-in" method="POST">
         <label for="username">Username</label>
         <input id="username" name="username" placeholder="username" type="text" />

@@ -6,6 +6,7 @@ const pool = require('./db/pool')
 const LocalStrategy = require('passport-local').Strategy
 const router = require('./routers/router')
 const bcrypt = require('bcryptjs')
+const flash = require('connect-flash')
 
 const app = express()
 app.set('views', path.join(__dirname, "views"))
@@ -16,7 +17,9 @@ app.use(express.urlencoded({ extended: false }))
 
 // 2. THEN SESSIONS & PASSPORT
 app.use(session({ secret: "cats", resave: false, saveUninitialized: false }))
+app.use(passport.initialize())
 app.use(passport.session())
+app.use(flash())
 
 // 3. THEN RES.LOCALS MIDDLEWARE
 app.use((req, res, next) => {
@@ -63,10 +66,15 @@ passport.deserializeUser(async (id, done) => {
     }
 })
 
+app.use((req, res, next) => {
+    res.locals.messages = req.flash('error')
+    next()
+})
+
 app.get('/', (req, res) => {
     const messages = req.session.messages || []
     req.session.messages = []
-    res.render('index', { user: req.user, messages: messages })
+    res.render('index', { user: req.user })
 })
 
 app.use('/', router);
@@ -76,7 +84,7 @@ app.post(
     passport.authenticate("local", {
         successRedirect: "/",
         failureRedirect: "/",
-        failureMessage: true,
+        failureFlash: true,
     })
 )
 

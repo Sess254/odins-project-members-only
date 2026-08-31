@@ -23,3 +23,32 @@ exports.postSignUpForm = async (req, res, next) => {
         next(error)
     }
 }
+
+exports.getJoinClub = (req, res) => {
+    if (!req.user) {
+        return res.redirect('/')
+    }
+    res.render('join-club-form')
+} 
+
+exports.postJoinClub = async (req, res) => {
+    if (!req.user) {
+        return res.redirect('/')
+    }
+
+    const { password } = req.body
+    const secret_passcode = 'odin'
+    if (password?.trim() === secret_passcode) {
+        try {
+            const result = await pool.query('UPDATE users SET membership_status = TRUE WHERE id = $1', [req.user.id])
+            console.log('update result:', result.rows)
+            req.user.membership_status = true
+            res.redirect('/')
+        } catch (err) {
+            console.error(err)
+            res.status(500).send('Sever')
+        }
+    } else {
+        res.render('join-club-form')
+    }
+}
