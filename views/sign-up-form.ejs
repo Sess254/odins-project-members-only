@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+</head>
+<body>
+    <h1>Please fill out this form to sign up for our club</h1>
+    <form action="/sign-up" method="POST">
+        <label for="first_name">First Name: </label>
+        <input type="text" id="first_name" name="first_name" required>
+        <label for="last_name">Last Name :</label>
+        <input type="text" name="last_name" id="last_name">
+        <label for="username">Username: </label>
+        <input type="text" name="username" id="username">
+        <label for="password">Password: </label>
+        <input type="password" name="password" id="password">
+        <label for="confirmPassword">Confirm Password: </label>
+        <input type="password" name="confirmPassword" id="confirmPassword">
+        <button type="submit">Sign Up</button>
+    </form>
+    
+</body>
+</html>
