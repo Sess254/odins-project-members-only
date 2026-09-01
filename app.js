@@ -11,6 +11,7 @@ const flash = require('connect-flash')
 const app = express()
 app.set('views', path.join(__dirname, "views"))
 app.set('view engine', 'ejs')
+app.use(express.static(path.join(__dirname, 'public')))
 
 // 1. PARSE URLENCODED BODY FIRST (Crucial for Passport to read form inputs)
 app.use(express.urlencoded({ extended: false }))
@@ -71,10 +72,25 @@ app.use((req, res, next) => {
     next()
 })
 
-app.get('/', (req, res) => {
-    const messages = req.session.messages || []
-    req.session.messages = []
-    res.render('index', { user: req.user })
+app.get('/', async (req, res) => {
+    try {
+            const query = `
+                SELECT messages.*, users.first_name, users.last_name
+                FROM messages
+                JOIN users ON messages.user_id = users.id
+                ORDER BY messages.timestamp DESC
+            `;
+            const { rows } = await pool.query(query)
+            const messages = rows
+            const errors = req.session.messages || []
+            req.session.messages = []
+            res.render('index', { user: req.user , messages: messages, errors: errors})
+
+    } catch (err) {
+        console.error(err)
+        res.status(500).send('Server Error')
+    }
+
 })
 
 app.use('/', router);

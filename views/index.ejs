@@ -1,34 +1,49 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Log In</title>
+    <title>Members Only</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <% if (locals.user) {%>
+    <% if (locals.user) { %>
         <h1>WELCOME BACK <%= user.username %></h1>
-        <% if (user.membership_status) { %>
-            <h2>You are an official Club Member!</h2>
-        <% } else { %>
-            <a href="/join-club">Join Our club</a>
+        <% if (!user.membership_status) { %>
+            <a href="/join-club">Join Our Club</a>
         <% } %>
+        <a href="/new-message">Create a new message</a>
         <a href="/log-out">LOG OUT</a>
     <% } else { %>
-        <h1>please log in</h1>
-            <% if (messages && messages.length > 0) { %>
-                <ul class="errors">
-                    <% messages.forEach(msg => { %>
+        <h1>Please log in</h1>
+        <% if (errors && errors.length > 0) { %>
+            <ul class="errors">
+                <% errors.forEach(msg => { %>
                     <li><%= msg %></li>
-                    <% }) %>
-                </ul>
-            <% } %>
+                <% }) %>
+            </ul>
+        <% } %>
         <a href="/sign-up">Sign Up</a>
         <form action="/log-in" method="POST">
-        <label for="username">Username</label>
-        <input id="username" name="username" placeholder="username" type="text" />
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" />
-        <button type="submit">Log In</button>
+            <label for="username">Username</label>
+            <input id="username" name="username" placeholder="username" type="text" />
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" />
+            <button type="submit">Log In</button>
         </form>
-    <%}%>
+    <% } %>
+
+    <hr>
+    <% if (locals.user) {%>
+        <% messages.forEach(msg => { %>
+            <div class="message">
+                <h3><%= msg.title %></h3>
+                <p><%= msg.text %></p>
+                <% if (locals.user && user.membership_status) { %>
+                    <small><%= msg.first_name %> <%= msg.last_name %> — <%= msg.timestamp.toLocaleString() %></small>
+                <% } %>
+            </div>
+        <% }) %>
+
+    <% } %>
 </body>
 </html>

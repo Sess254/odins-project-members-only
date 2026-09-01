@@ -4,7 +4,10 @@ const session = require("express-session")
 const passport = require("passport")
 const LocalStrategy = require('passport-local').Strategy
 
-
+const isAuthenticated = (req, res, next) => {
+    if (req.user) return  next()
+    res.redirect('log-in')
+}
 
 exports.getSignUpForm = (req, res) => {
     res.render('sign-up-form')
@@ -41,14 +44,30 @@ exports.postJoinClub = async (req, res) => {
     if (password?.trim() === secret_passcode) {
         try {
             const result = await pool.query('UPDATE users SET membership_status = TRUE WHERE id = $1', [req.user.id])
-            console.log('update result:', result.rows)
             req.user.membership_status = true
             res.redirect('/')
         } catch (err) {
             console.error(err)
-            res.status(500).send('Sever')
+            res.status(500).send('Sever Error')
         }
     } else {
         res.render('join-club-form')
+    }
+}
+
+exports.getMessageForm = (req, res) => {
+    res.render('new-message-form')
+}
+
+exports.postNewMessage = async (req, res, next) => {
+    const { title, text } = req.body
+    
+    try {
+        await pool.query('INSERT INTO messages (title, text, user_id) VALUES ($1, $2, $3)', [title, text, req.user.id])
+        res.redirect('/')
+
+    } catch (err) {
+        console.error(err)
+        res.status(500).send('Server Error')
     }
 }

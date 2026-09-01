@@ -7,5 +7,7 @@ router.get('/sign-up', controller.getSignUpForm)
 router.post('/sign-up', controller.postSignUpForm)
 router.get('/join-club', controller.getJoinClub)
 router.post('/join-club', controller.postJoinClub)
+router.get('/new-message', controller.getMessageForm)
+router.post('/new-message', controller.postNewMessage)
 
 module.exports = router
