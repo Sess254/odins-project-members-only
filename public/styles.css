@@ -5,5 +5,105 @@
 }
 
 body {
-    background-color: rgb(rgb(194, 185, 185), green, blue);
+    background-color: rgb(2, 2, 29);
+    color: whitesmoke;
+    font-size: 1rem;
+    font-family: "Scoutie Sans", sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: whitesmoke;
+}
+
+ul {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    padding: 1em;
+    align-items: center;
+}
+
+header {
+    padding: 1em 0;
+    margin: 0 0 1em 0;
+    background-color: rgb(2, 2, 40);
+}
+
+a.sign-up {
+    padding: .5em 1em;
+    text-decoration: dashed;
+    text-decoration-color: whitesmoke;
+    font-weight: bold;
+    margin: 0 0 1em 0;
+    font-size: 1.4rem;
+}
+
+a.sign-up:hover {
+    color: rgb(70, 70, 143);
+}
+
+a.home-icon {
+    font-size: 1.5rem;
+}
+
+label, input{
+    display: block;
+}
+
+input {
+    padding: 1em 2em;
+    margin: 0 0 1em 0;
+    width: 100%;
+    border-radius: 5em;
+}
+
+button.log-in {
+    color: whitesmoke;
+    background-color: rgb(85, 85, 163);
+    border: none;
+    padding: 1em 2em;
+    font-weight: bold; 
+    display: block;
+    width: 100%;
+    margin-bottom: 1em;
+    border-radius: 5em;
+}
+
+button.log-in:hover {
+    background-color: rgb(53, 53, 76);
+}
+
+.home_icon {
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-family: "Caacupe One", sans-serif;
+}
+
+
+.sign-up-container{
+    width: 50%;
+    margin: 1em auto;
+}
+
+.user-heading {
+    text-align: center;
+}
+
+.message-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 2em;
+    margin: 1em 0;
+}
+
+.message-title {
+    text-decoration: underline;
+}
+
+
+.heading {
+    margin: 1em 0;
 }

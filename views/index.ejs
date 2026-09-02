@@ -3,18 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Members Only</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caacupe+One&family=Scoutie+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <header>
+        <nav>
+            <ul>
+                <li>
+                    <a href="/" class="home-icon">Odin</a>
+                </li>
+                <li>
+                    <% if (locals.user) { %>
+                        <% if (!user.membership_status) { %>
+                            <a href="/join-club" class="join-club">Join Our Club</a>
+                        <% } %>
+                    <% } %>
+                </li>
+                <li>
+                    <a href="/new-message" class="create-message">Create a new message</a>
+                </li>
+                <li>
+                    <a href="/log-out" class="sign-up">LOG OUT</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
     <% if (locals.user) { %>
-        <h1>WELCOME BACK <%= user.username %></h1>
-        <% if (!user.membership_status) { %>
-            <a href="/join-club">Join Our Club</a>
-        <% } %>
-        <a href="/new-message">Create a new message</a>
-        <a href="/log-out">LOG OUT</a>
+        <h1 class="user-heading">WELCOME BACK <%= user.username %></h1>
     <% } else { %>
-        <h1>Please log in</h1>
         <% if (errors && errors.length > 0) { %>
             <ul class="errors">
                 <% errors.forEach(msg => { %>
@@ -22,28 +41,32 @@
                 <% }) %>
             </ul>
         <% } %>
-        <a href="/sign-up">Sign Up</a>
-        <form action="/log-in" method="POST">
-            <label for="username">Username</label>
-            <input id="username" name="username" placeholder="username" type="text" />
-            <label for="password">Password</label>
-            <input id="password" name="password" type="password" />
-            <button type="submit">Log In</button>
-        </form>
-    <% } %>
-
-    <hr>
-    <% if (locals.user) {%>
-        <% messages.forEach(msg => { %>
-            <div class="message">
-                <h3><%= msg.title %></h3>
-                <p><%= msg.text %></p>
-                <% if (locals.user && user.membership_status) { %>
-                    <small><%= msg.first_name %> <%= msg.last_name %> — <%= msg.timestamp.toLocaleString() %></small>
-                <% } %>
-            </div>
-        <% }) %>
+        <div class="sign-up-container">
+            <h1>Please log in</h1>
+            <form action="/log-in" method="POST" class="sign-up-form">
+                <label for="username">Username: </label>
+                <input id="username" name="username" placeholder="username" type="text" />
+                <label for="password">Password: </label>
+                <input id="password" name="password" type="password" placeholder="password" />
+                <button class="log-in" type="submit">Log In</button>
+            </form>
+            <p>Don't have an account? <Script></Script>ign up here -><a href="/sign-up" class="sign-up">Sign Up</a></p>
+        </div>
 
     <% } %>
+    <div class="message-container">
+            <% if (locals.user) {%>
+                <% messages.forEach(msg => { %>
+                    <div class="message">
+                        <h3 class="message-title"><%= msg.title %></h3>
+                        <p><%= msg.text %></p>
+                        <% if (locals.user && user.membership_status) { %>
+                            <small><%= msg.first_name %> <%= msg.last_name %> — <%= msg.timestamp.toLocaleString() %></small>
+                        <% } %>
+                    </div>
+                <% }) %>
+            <% } %>
+    </div>
+
 </body>
 </html>
